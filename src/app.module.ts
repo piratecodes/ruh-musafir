@@ -18,6 +18,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { ExperiencesModule } from './experiences/experiences.module';
 import { InquiriesModule } from './inquiries/inquiries.module';
 import { SettingsModule } from './settings/settings.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { SettingsModule } from './settings/settings.module';
     ExperiencesModule,
     InquiriesModule,
     SettingsModule,
+    MailModule,
   ],
   controllers: [AppController], 
   providers: [AppService],

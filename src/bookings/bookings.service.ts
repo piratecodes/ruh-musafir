@@ -2,14 +2,15 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { PrismaService } from '@/prisma/prisma.service';
 import { Prisma, Booking, PaymentStatus, BookingStatus } from '@prisma/client';
 import { PdfService } from './pdf.service';
-import * as nodemailer from 'nodemailer';
+import { MailService } from '@/mail/mail.service';
 import { generateInvoiceHtml } from '@/templates/invoice.template'; 
 
 @Injectable()
 export class BookingsService {
   constructor(
     private prisma: PrismaService,
-    private pdfService: PdfService
+    private pdfService: PdfService,
+    private mailService: MailService
   ) {}
 
   async findAllForAdmin(): Promise<any[]> {
@@ -322,13 +323,7 @@ export class BookingsService {
     const html = generateInvoiceHtml(invoiceData);
     const pdfBuffer = await this.pdfService.generatePdfFromHtml(html);
 
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com', port: 465, secure: true,
-      auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_APP_PASSWORD },
-    });
-    
-    await transporter.sendMail({
-      from: `"Ruh Musafir Accounts" <${process.env.GMAIL_USER}>`,
+    await this.mailService.sendEmail({
       to: booking.guestEmail,
       subject: `Copy of Invoice - Ruh Musafir`,
       html: `<p>Dear ${booking.guestFirstName},</p><p>As requested, please find a copy of your detailed invoice attached.</p>`,
@@ -351,12 +346,7 @@ export class BookingsService {
         const html = generateInvoiceHtml(invoiceData);
         const pdfBuffer = await this.pdfService.generatePdfFromHtml(html);
         if (booking.guestEmail) {
-          const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com', port: 465, secure: true,
-            auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_APP_PASSWORD },
-          });
-          transporter.sendMail({
-            from: `"Ruh Musafir" <${process.env.GMAIL_USER}>`,
+          this.mailService.sendEmail({
             to: booking.guestEmail,
             subject: `Your Final Invoice - Ruh Musafir`,
             html: `<p>Dear ${booking.guestFirstName},</p><p>Thank you for staying with us! Your folio is completely settled. Please find your final consolidated invoice attached.</p>`,

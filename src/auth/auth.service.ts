@@ -3,7 +3,7 @@ import { UsersService } from '@/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '@/prisma/prisma.service'; // <-- NEW
 import * as bcrypt from 'bcryptjs';
-import * as nodemailer from 'nodemailer';
+import { MailService } from '@/mail/mail.service';
 import * as crypto from 'crypto';
 
 import { getWelcomeEmail } from '@/templates/welcome.template';
@@ -15,6 +15,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private prisma: PrismaService, // <-- INJECTED PRISMA
+    private mailService: MailService,
   ) {}
 
   async register(data: any, device: string, ipAddress: string) {
@@ -55,18 +56,7 @@ export class AuthService {
 
     // --- NEW: SEND THE WELCOME EMAIL ---
     try {
-      const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-          user: process.env.GMAIL_USER,
-          pass: process.env.GMAIL_APP_PASSWORD,
-        },
-      });
-
-      await transporter.sendMail({
-        from: `"Ruh Musafir Sanctuary" <${process.env.GMAIL_USER}>`,
+      await this.mailService.sendEmail({
         to: user.email,
         subject: 'Welcome to your Sanctuary - Ruh Musafir',
         html: getWelcomeEmail(user.firstName),
@@ -193,20 +183,9 @@ export class AuthService {
 
     // 2. Try/Catch block to explicitly catch and log Gmail errors
     try {
-      const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-          user: process.env.GMAIL_USER, 
-          pass: process.env.GMAIL_APP_PASSWORD, 
-        },
-      });
-
       const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
-
-      await transporter.sendMail({
-        from: `"Ruh Musafir Sanctuary" <${process.env.GMAIL_USER}>`,
+      
+      await this.mailService.sendEmail({
         to: user.email,
         subject: 'Password Reset Request - Ruh Musafir',
         html: getResetPasswordEmail(user.firstName, resetUrl),
