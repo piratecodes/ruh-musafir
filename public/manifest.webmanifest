@@ -1,0 +1,92 @@
+{
+  "name": "Ruh Musafir - Best Homestay at Shangarh",
+  "short_name": "Ruh Musafir",
+  "description": "Experience the best homestay in Shangarh with Ruh Musafir. Enjoy comfortable accommodation and exceptional hospitality. Book your stay now for an unforgettable getaway.",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/",
+  "orientation": "portrait",
+  "id": "1.0.2",
+  "lang": "en",
+  "dir": "auto",
+  "icons": [
+    {
+      "src": "icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/screenshot-1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Desktop interface of my app",
+      "platform": "wide"
+    },
+    {
+      "src": "screenshots/screenshot-2.png",
+      "sizes": "388x843",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile interface of my app",
+      "platform": "narrow"
+    }
+  ],
+  "categories": [
+    "business",
+    "lifestyle"
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "web+ruh",
+      "url": "/protocol-handler?protocol=%s"
+    }
+  ],
+  "related_applications": [],
+  "display_override": ["window-controls-overlay"],
+  "share_target": null,
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "shortcuts": [],
+  "iarc_rating_id": "",
+  "background_color": "#F7F5F0",
+  "theme_color": "#5C6E58"
+}
