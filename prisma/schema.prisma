@@ -1,0 +1,350 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// --- ENUMS ---
+enum Role {
+  GUEST
+  STAFF
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CHECKED_IN
+  CHECKED_OUT
+  CANCELLED
+  NO_SHOW
+}
+
+enum RoomType {
+  PRIVATE
+  DORM
+}
+
+enum OrderStatus {
+  PENDING
+  PREPARING
+  SERVED
+  PAID
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PAID
+  PARTIAL
+  PENDING
+  REFUNDED
+  SUCCESS // Kept for backwards compatibility with your Cafe setup
+  FAILED  // Kept for backwards compatibility with your Cafe setup
+}
+
+enum ShiftStatus {
+  OPEN
+  CLOSED
+}
+
+enum InquiryStatus {
+  PENDING
+  CONTACTED
+  RESOLVED
+}
+
+// --- MODELS ---
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String
+  firstName     String
+  lastName      String
+  phone         String?   @unique
+  dateOfBirth   DateTime? 
+  role          Role      @default(GUEST)
+  designation   String?   
+  bio           String?   
+  profilePic    String?   
+  
+  // Relations
+  bookings      Booking[]
+  sessions      Session[]
+  folioAdjustments FolioAdjustment[]
+  
+  // --- THE FIX: ADDED MISSING OPPOSITE RELATIONS HERE ---
+  openedShifts  Shift[]   @relation("ShiftOpenedBy")
+  closedShifts  Shift[]   @relation("ShiftClosedBy")
+  expenses      Expense[]
+  // ------------------------------------------------------
+
+  resetToken        String?
+  resetTokenExpires DateTime?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Session {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  token         String    @unique // The actual JWT so we can blacklist it if revoked
+  device        String    // e.g., "Chrome on Mac"
+  ipAddress     String?   
+  lastActive    DateTime  @default(now())
+  isRevoked     Boolean   @default(false)
+  
+  createdAt     DateTime  @default(now())
+}
+
+enum BedStatus {
+  AVAILABLE
+  OCCUPIED
+  MAINTENANCE
+}
+
+model Room {
+  id          String    @id @default(uuid())
+  name        String    @default("Unnamed Room")
+  roomNumber  String    @unique // e.g., "101" or "Mountain Suite"
+  type        RoomType
+  capacity    Int
+  basePrice   Float
+  description String?   @db.Text
+  bedSize     String?
+  isActive    Boolean   @default(true)
+  images      String[]  @default([])
+  slug        String    @unique @default(uuid())
+  
+  // Relations
+  beds        Bed[]
+  bookings    Booking[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Bed {
+  id          String    @id @default(uuid())
+  name        String    // e.g., "Bunk 1 - Upper"
+  status      BedStatus @default(AVAILABLE)
+  
+  room        Room      @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId      String
+  bookings    Booking[]
+}
+
+model Booking {
+  id            String        @id @default(uuid())
+  
+  guestFirstName String
+  guestLastName  String
+  guestEmail    String?
+  guestPhone    String?
+
+  checkInDate   DateTime
+  checkOutDate  DateTime
+  adults        Int
+  children      Int           @default(0)
+  specialNotes  String?
+
+  totalAmount   Float
+  amountPaid    Float         @default(0)
+  dueAmount     Float         @default(0)
+  adjustments   FolioAdjustment[]
+  paymentStatus PaymentStatus @default(PENDING)
+  paymentMode   String        @default("CASH")
+  experiences   String[]      @default([])
+
+  status        BookingStatus @default(PENDING)
+  holdExpiresAt DateTime?
+
+  user          User?         @relation(fields: [userId], references: [id])
+  userId        String?
+  room          Room          @relation(fields: [roomId], references: [id])
+  roomId        String
+  
+  // THE FIX: Changed from 1-to-1 to Many-to-Many! One booking can now hold multiple beds.
+  beds          Bed[]
+
+  cafeOrders    CafeOrder[]
+  payment       Payment[]
+  
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+// --- EXPERIENCES & ADD-ONS ---
+model Experience {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  timePeriod  String   // e.g., "Morning", "3 Hours", "Half Day", "Evening"
+  price       Float
+  isActive    Boolean  @default(true)
+  images      String[] @default([])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// --- CAFE & POS SYSTEM ---
+
+model MenuCategory {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model MenuItem {
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  price       Float
+  category    String      // e.g., "Beverage", "Food", "Dessert"
+  isAvailable Boolean     @default(true)
+  
+  image       String?
+  diet        String      @default("VEG") 
+  
+  orderItems  OrderItem[]
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model CafeOrder {
+  id              String      @id @default(uuid())
+  totalAmount     Float
+  status          OrderStatus @default(PENDING)
+  
+  // --- NEW: WALK-IN CUSTOMER DETAILS ---
+  walkInFirstName String?
+  walkInLastName  String?
+  walkInPhone     String?
+  // -------------------------------------
+
+  // Relations
+  items           OrderItem[]
+  
+  booking         Booking?    @relation(fields: [bookingId], references: [id])
+  bookingId       String?
+  
+  payment         Payment?    
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model OrderItem {
+  id          String    @id @default(uuid())
+  quantity    Int
+  unitPrice   Float     // Stored here in case the MenuItem price goes up next year, old orders stay accurate
+  
+  // Relations
+  order       CafeOrder @relation(fields: [orderId], references: [id])
+  orderId     String
+  menuItem    MenuItem  @relation(fields: [menuItemId], references: [id])
+  menuItemId  String
+}
+
+model FolioAdjustment {
+  id          String   @id @default(uuid())
+  amount      Float
+  reason      String
+  isPaid      Boolean  @default(false) // <-- ADD THIS LINE
+  createdAt   DateTime @default(now())
+
+  booking     Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  bookingId   String
+
+  addedBy     User?    @relation(fields: [addedById], references: [id])
+  addedById   String?
+}
+
+// --- TREASURY & BILLING ---
+
+model Payment {
+  id            String        @id @default(uuid())
+  amount        Float
+  transactionId String?       @unique // From Razorpay/Stripe
+  method        String        // "CASH", "UPI", "CARD"
+  status        PaymentStatus @default(PENDING)
+  
+  // Relations: A payment can be for a room booking OR a direct walk-in cafe order
+  booking       Booking?      @relation(fields: [bookingId], references: [id])
+  bookingId     String?       
+  
+  cafeOrder     CafeOrder?    @relation(fields: [cafeOrderId], references: [id])
+  cafeOrderId   String?       @unique
+  
+  createdAt     DateTime      @default(now())
+}
+
+// --- SHIFT & EXPENSE TRACKING ---
+
+model Shift {
+  id            String      @id @default(uuid())
+  openedAt      DateTime    @default(now())
+  closedAt      DateTime?
+  startingCash  Float       @default(0)
+  expectedCash  Float?
+  actualCash    Float?
+  discrepancy   Float?
+  status        ShiftStatus @default(OPEN)
+
+  // Audit Trail
+  openedBy      User        @relation("ShiftOpenedBy", fields: [openedById], references: [id])
+  openedById    String
+  closedBy      User?       @relation("ShiftClosedBy", fields: [closedById], references: [id])
+  closedById    String?
+
+  expenses      Expense[]
+}
+
+model Expense {
+  id          String   @id @default(uuid())
+  amount      Float
+  reason      String
+  paidTo      String?
+  method      String   @default("CASH") // THE FIX: Track if expense was Cash or UPI
+  createdAt   DateTime @default(now())
+
+  // Audit Trail
+  loggedBy    User     @relation(fields: [loggedById], references: [id])
+  loggedById  String
+
+  shift       Shift?   @relation(fields: [shiftId], references: [id])
+  shiftId     String?
+}
+
+model Inquiry {
+  id        String        @id @default(uuid())
+  firstName String
+  lastName  String
+  email     String
+  phone     String
+  message   String        @db.Text
+  status    InquiryStatus @default(PENDING)
+  
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+
+// --- SYSTEM SETTINGS (EMERGENCY KILL-SWITCH) ---
+model SystemSettings {
+  id                 String   @id @default("global") // Singleton pattern
+  isMaintenanceMode  Boolean  @default(false)
+  maintenanceMessage String?  @db.Text
+  updatedAt          DateTime @updatedAt
+}
