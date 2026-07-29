@@ -2,6 +2,8 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateStoryDto, UpdateStoryDto } from './dto/our-stories.dto';
 import * as sanitizeHtml from 'sanitize-html';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class OurStoriesService {
@@ -105,6 +107,15 @@ export class OurStoriesService {
       allowedSchemes: ['http', 'https', 'ftp', 'mailto', 'data'],
     }) : undefined;
 
+    // Delete old image if it was replaced or removed
+    if (existing.coverImage && existing.coverImage.startsWith('/uploads/our-stories/') && (updateStoryDto.coverImage !== existing.coverImage)) {
+      const fileName = existing.coverImage.replace('/uploads/our-stories/', '');
+      const filePath = path.join(process.cwd(), 'uploads', 'our-stories', fileName);
+      if (fs.existsSync(filePath)) {
+        try { fs.unlinkSync(filePath); } catch (e) { console.error('Failed to delete old image', e); }
+      }
+    }
+
     return this.prisma.story.update({
       where: { id },
       data: {
@@ -120,6 +131,16 @@ export class OurStoriesService {
   async remove(id: string) {
     const existing = await this.prisma.story.findUnique({ where: { id } });
     if (!existing) throw new NotFoundException('Story not found');
+    
+    // Delete associated image
+    if (existing.coverImage && existing.coverImage.startsWith('/uploads/our-stories/')) {
+      const fileName = existing.coverImage.replace('/uploads/our-stories/', '');
+      const filePath = path.join(process.cwd(), 'uploads', 'our-stories', fileName);
+      if (fs.existsSync(filePath)) {
+        try { fs.unlinkSync(filePath); } catch (e) { console.error('Failed to delete image', e); }
+      }
+    }
+
     return this.prisma.story.delete({ where: { id } });
   }
 
