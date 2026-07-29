@@ -81,24 +81,24 @@ export default function AuditTrail({ auditData }) {
                  <div className="p-4 text-center text-xs font-bold text-foreground/40 uppercase tracking-widest mt-10">No income found for this date.</div>
               )}
               {filteredPayments?.map((payment) => (
-                <div key={payment.id} className="p-4 flex items-center justify-between border-b border-primary/5 last:border-0 hover:bg-emerald-50/30 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${payment.method === 'CASH' ? 'bg-emerald-100 text-emerald-600' : payment.method === 'UPI' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'}`}>
+                <div key={payment.id} className="p-4 flex items-start sm:items-center justify-between gap-3 border-b border-primary/5 last:border-0 hover:bg-emerald-50/30 transition-colors">
+                  <div className="flex items-start sm:items-center gap-3 min-w-0">
+                    <div className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center ${payment.method === 'CASH' ? 'bg-emerald-100 text-emerald-600' : payment.method === 'UPI' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'}`}>
                       <ArrowUpRight size={14}/>
                     </div>
-                    <div>
-                      <p className="text-xs font-bold text-primary flex items-center gap-2">
-                        {payment.booking ? `${payment.booking.guestFirstName} ${payment.booking.guestLastName} (Room ${payment.booking.room?.roomNumber})` : (payment.cafeOrder?.walkInFirstName || 'Cafe Walk-In')}
-                        <span className={`px-1.5 py-0.5 text-[7px] font-black rounded-sm tracking-widest ${payment.booking ? 'bg-purple-100 text-purple-700' : 'bg-amber-100 text-amber-700'}`}>
+                    <div className="min-w-0">
+                      <div className="text-xs font-bold text-primary flex flex-wrap items-center gap-1.5 leading-tight">
+                        <span className="truncate">{payment.booking ? `${payment.booking.guestFirstName} ${payment.booking.guestLastName} (Room ${payment.booking.room?.roomNumber})` : (payment.cafeOrder?.walkInFirstName || 'Cafe Walk-In')}</span>
+                        <span className={`shrink-0 px-1.5 py-0.5 text-[7px] font-black rounded-sm tracking-widest ${payment.booking ? 'bg-purple-100 text-purple-700' : 'bg-amber-100 text-amber-700'}`}>
                           {payment.booking ? 'ROOM TAB' : 'CAFE POS'}
                         </span>
-                      </p>
-                      <p className="text-[9px] font-bold text-foreground/40 uppercase tracking-widest mt-1">
+                      </div>
+                      <p className="text-[9px] font-bold text-foreground/40 uppercase tracking-widest mt-1.5">
                         {new Date(payment.createdAt).toLocaleTimeString()} • <span className="text-primary border border-primary/10 bg-white px-1 py-0.5 rounded-sm">{payment.method}</span>
                       </p>
                     </div>
                   </div>
-                  <span className="text-sm font-black text-emerald-600">+ ₹{payment.amount}</span>
+                  <span className="text-sm font-black text-emerald-600 shrink-0 self-start sm:self-center mt-1 sm:mt-0">+ ₹{payment.amount}</span>
                 </div>
               ))}
             </div>
@@ -115,24 +115,24 @@ export default function AuditTrail({ auditData }) {
                  <div className="p-4 text-center text-xs font-bold text-foreground/40 uppercase tracking-widest mt-10">No expenses found for this date.</div>
               )}
               {filteredExpenses?.map((expense) => (
-                <div key={expense.id} className="p-4 flex items-center justify-between border-b border-primary/5 last:border-0 hover:bg-red-50/30 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${expense.method === 'CASH' ? 'bg-amber-100 text-amber-600' : 'bg-blue-100 text-blue-600'}`}>
+                <div key={expense.id} className="p-4 flex items-start sm:items-center justify-between gap-3 border-b border-primary/5 last:border-0 hover:bg-red-50/30 transition-colors">
+                  <div className="flex items-start sm:items-center gap-3 min-w-0">
+                    <div className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center ${expense.method === 'CASH' ? 'bg-amber-100 text-amber-600' : 'bg-blue-100 text-blue-600'}`}>
                       <ArrowDownRight size={14}/>
                     </div>
-                    <div>
-                      <p className="text-xs font-bold text-primary flex items-center gap-2">
-                        {expense.reason}
-                        <span className="px-1.5 py-0.5 text-[7px] font-black rounded-sm tracking-widest bg-gray-100 text-gray-500">
+                    <div className="min-w-0">
+                      <div className="text-xs font-bold text-primary flex flex-wrap items-center gap-1.5 leading-tight">
+                        <span className="truncate">{expense.reason}</span>
+                        <span className="shrink-0 px-1.5 py-0.5 text-[7px] font-black rounded-sm tracking-widest bg-gray-100 text-gray-500">
                           {expense.paidTo || 'GENERAL'}
                         </span>
-                      </p>
-                      <p className="text-[9px] font-bold text-foreground/40 uppercase tracking-widest mt-1">
+                      </div>
+                      <p className="text-[9px] font-bold text-foreground/40 uppercase tracking-widest mt-1.5">
                         {new Date(expense.createdAt).toLocaleTimeString()} • <span className="text-primary border border-primary/10 bg-white px-1 py-0.5 rounded-sm">{expense.method}</span> • Logged By: {expense.loggedBy?.firstName}
                       </p>
                     </div>
                   </div>
-                  <span className="text-sm font-black text-red-500">- ₹{expense.amount}</span>
+                  <span className="text-sm font-black text-red-500 shrink-0 self-start sm:self-center mt-1 sm:mt-0">- ₹{expense.amount}</span>
                 </div>
               ))}
             </div>

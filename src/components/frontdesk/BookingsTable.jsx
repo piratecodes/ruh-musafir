@@ -26,7 +26,7 @@ export default function BookingsTable({ bookings, isLoading, onSelectBooking }) 
   }
 
   return (
-    <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-accent/25 scrollbar-corner-foreground/75 scrollbar-track-accent/25 flex-1 bg-white/80 backdrop-blur-xl rounded-4xl border border-primary/10 shadow-lg">
+    <div className="overflow-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-accent/25 scrollbar-corner-foreground/75 scrollbar-track-accent/25 flex-1 bg-white/80 backdrop-blur-xl rounded-4xl border border-primary/10 shadow-lg">
       <table className="w-full text-left border-collapse min-w-250">
         <thead>
           <tr className="border-b border-primary/5 text-[9px] uppercase tracking-widest font-bold text-foreground/40 bg-secondary/10 sticky top-0 backdrop-blur-md z-10">
@@ -66,8 +66,8 @@ export default function BookingsTable({ bookings, isLoading, onSelectBooking }) 
                 )}
               </td>
               <td className="p-5 text-center pr-6">
-                <button onClick={() => onSelectBooking(b)} className="px-4 py-2 bg-white text-primary text-[9px] uppercase tracking-widest font-bold rounded-lg hover:bg-gray-50 transition-colors border border-primary/10 shadow-sm flex items-center gap-2 mx-auto">
-                  <Eye size={14} /> Open Folio
+                <button onClick={() => onSelectBooking(b)} className="w-full sm:w-auto justify-center px-5 py-3 bg-white text-primary text-[10px] uppercase tracking-widest font-bold rounded-xl hover:bg-gray-50 transition-colors border border-primary/10 shadow-sm flex items-center gap-2 mx-auto">
+                  <Eye size={16} /> Open Folio
                 </button>
               </td>
             </tr>

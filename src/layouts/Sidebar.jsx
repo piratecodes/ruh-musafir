@@ -1,11 +1,11 @@
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, BedDouble, CalendarDays, Coffee, Wallet, LogOut, Settings, Compass, ConciergeBell, MessageSquareText } from 'lucide-react'
+import { LayoutDashboard, BedDouble, CalendarDays, Coffee, Wallet, LogOut, Settings, Compass, ConciergeBell, MessageSquareText, BookOpen, X } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { getImageUrl } from '@/pages/SettingsPage' 
 
 import logo from '@/assets/ruh_musafir.jpeg'
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }) {
   const { user, logout } = useAuthStore()
 
   const navItems = [
@@ -15,6 +15,7 @@ export default function Sidebar() {
     { name: 'Guest Bookings', path: '/bookings', icon: CalendarDays },
     { name: 'Experiences', path: '/experiences', icon: Compass }, // <-- NEW ROUTE
     { name: 'Cafe POS', path: '/cafe-pos', icon: Coffee },
+    { name: 'Our Stories', path: '/our-stories', icon: BookOpen },
     { name: 'Contact', path: '/contact', icon: MessageSquareText },
     { name: 'Treasury & Billing', path: '/treasury', icon: Wallet },
     // { name: 'Roles & Users', path: '/roles', icon: Settings },
@@ -23,13 +24,29 @@ export default function Sidebar() {
   const profilePicUrl = getImageUrl(user?.profilePic)
 
   return (
-    <aside className="w-72 hidden lg:flex flex-col h-screen sticky top-0 bg-background/75 border-r border-primary/10 shadow-lg z-20 rounded-r-xl overflow-hidden">
-      {/* Branding */}
-      <div className="px-8 py-3.5 border-b border-primary/5">
-        <div className="flex items-center gap-2 mb-1.5">
-          <div className="px-2.5 py-0.5 bg-accent/10 text-accent rounded-full text-[9px] uppercase tracking-[0.2em] font-bold border border-accent/20">
-            Admin Portal
-          </div>
+    <>
+      {/* Mobile Overlay */}
+      <div 
+        className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300 ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+        onClick={onClose}
+      />
+
+      <aside className={`
+        w-72 flex flex-col h-screen bg-background/95 border-r border-primary/10 shadow-2xl z-50 rounded-r-xl overflow-hidden
+        fixed top-0 left-0 transition-transform duration-300 ease-in-out
+        lg:sticky lg:translate-x-0 lg:shadow-lg lg:bg-background/75
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+      `}>
+        {/* Branding */}
+        <div className="px-8 py-3.5 border-b border-primary/5 relative">
+          <button onClick={onClose} className="lg:hidden absolute top-4 right-4 p-1.5 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
+            <X size={20} />
+          </button>
+          
+          <div className="flex items-center gap-2 mb-1.5">
+            <div className="px-2.5 py-0.5 bg-accent/10 text-accent rounded-full text-[9px] uppercase tracking-[0.2em] font-bold border border-accent/20">
+              Admin Portal
+            </div>
         </div>
         <div className='flex flex-row items-center space-x-1.5'>
           <img src={logo} alt="Ruh Musafir Logo" className="w-10 h-auto" />
@@ -43,6 +60,7 @@ export default function Sidebar() {
           <NavLink
             key={item.name}
             to={item.path}
+            onClick={onClose}
             className={({ isActive }) =>
               `flex items-center gap-4 p-4 rounded-2xl text-[11px] uppercase tracking-[0.2em] font-bold transition-all duration-300 border ${
                 isActive
@@ -99,5 +117,6 @@ export default function Sidebar() {
           <p className='text-xs text-muted'>&copy; {new Date().getFullYear()} Ruh Musafir. All rights reserved.</p>
       </footer>
     </aside>
+    </>
   )
 }

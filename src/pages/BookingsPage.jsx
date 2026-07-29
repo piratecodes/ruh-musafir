@@ -193,8 +193,8 @@ export default function BookingsPage() {
           </p>
         </div>
         
-        <div className="flex items-center gap-3">
-          <div className="flex bg-secondary/40 p-1 rounded-xl border border-primary/5 shadow-sm">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto mt-4 sm:mt-0">
+          <div className="flex bg-secondary/40 p-1 rounded-xl border border-primary/5 shadow-sm overflow-x-auto scrollbar-none">
             {[
               { id: 'MATRIX', label: 'Availability Grid', icon: Calendar },
               { id: 'LEDGER', label: 'Bookings Ledger', icon: List }
@@ -202,21 +202,21 @@ export default function BookingsPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-[9px] uppercase tracking-[0.15em] font-bold transition-all ${
+                className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[9px] uppercase tracking-[0.15em] font-bold transition-all whitespace-nowrap ${
                   activeTab === tab.id 
                     ? 'bg-white text-primary shadow-sm' 
                     : 'text-foreground/50 hover:text-primary'
                 }`}
               >
-                <tab.icon size={12} /> {tab.label}
+                <tab.icon size={12} className="shrink-0" /> {tab.label}
               </button>
             ))}
           </div>
           <button 
             onClick={() => { setEditingBooking(null); setSelectedSlot(null); setModalMode('EDIT'); setIsModalOpen(true); }}
-            className="flex items-center justify-center gap-2 px-5 py-3.5 bg-primary text-white rounded-xl hover:bg-primary-hover transition-colors shadow-lg shadow-primary/20 text-[9px] uppercase tracking-[0.2em] font-bold"
+            className="flex items-center justify-center gap-2 px-5 py-3.5 bg-primary text-white rounded-xl hover:bg-primary-hover transition-colors shadow-lg shadow-primary/20 text-[9px] uppercase tracking-[0.2em] font-bold shrink-0 whitespace-nowrap"
           >
-            <Plus size={14} /> Book Desk WalkIn
+            <Plus size={14} className="shrink-0" /> Book Desk WalkIn
           </button>
         </div>
       </div>

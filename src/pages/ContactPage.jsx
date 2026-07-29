@@ -149,9 +149,9 @@ export default function ContactPage() {
             />
           </div>
           
-          <Menu as="div" className="relative z-50">
-            <MenuButton className="px-6 py-3.5 bg-white/50 rounded-xl border border-primary/10 text-xs font-bold text-primary shadow-sm flex items-center gap-2 uppercase tracking-widest transition-colors hover:bg-white">
-              {statusFilter} <ChevronDown size={14} />
+          <Menu as="div" className="relative z-50 w-full sm:w-auto">
+            <MenuButton className="w-full px-6 py-3.5 bg-white/50 rounded-xl border border-primary/10 text-xs font-bold text-primary shadow-sm flex items-center justify-between sm:justify-start gap-2 uppercase tracking-widest transition-colors hover:bg-white">
+              {statusFilter === 'ALL' ? 'All Status' : statusFilter} <ChevronDown size={14} />
             </MenuButton>
             <MenuItems className="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-xl p-1 border border-primary/5 z-[9999]">
               {['ALL', 'PENDING', 'CONTACTED', 'RESOLVED'].map(s => (

@@ -5,16 +5,16 @@ import { getImageUrl } from '@/pages/SettingsPage'
 
 export default function PosTerminalTab({ state, handlers }) {
   return (
-    <div className="absolute inset-0 flex gap-6 animate-in fade-in duration-300">
+    <div className="absolute inset-0 flex flex-col lg:flex-row gap-4 lg:gap-6 animate-in fade-in duration-300 overflow-y-auto lg:overflow-hidden pb-10">
       {/* LEFT: MENU GRID */}
-      <div className="flex-1 flex flex-col gap-4 bg-white/60 backdrop-blur-xl p-6 rounded-4xl border border-primary/10 shadow-lg min-w-0">
-        <div className="flex gap-3 shrink-0 relative z-50">
-          <div className="relative flex-1">
+      <div className="flex-1 flex flex-col gap-4 bg-white/60 backdrop-blur-xl p-4 lg:p-6 rounded-4xl border border-primary/10 shadow-lg min-w-0 min-h-[500px]">
+        <div className="flex flex-col sm:flex-row gap-3 shrink-0 relative z-50">
+          <div className="relative flex-1 w-full">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40" size={16} />
             <input type="text" placeholder="Search menu items..." value={state.searchQuery} onChange={e => handlers.setSearchQuery(e.target.value)} className="w-full pl-11 pr-4 py-3.5 bg-white rounded-xl border border-primary/5 focus:border-primary/20 outline-none text-xs font-bold text-primary shadow-sm transition-all" />
           </div>
           
-          <div className="w-36">
+          <div className="w-full sm:w-36">
             <Listbox value={state.terminalDiet} onChange={handlers.setTerminalDiet}>
               <div className="relative h-full">
                 <ListboxButton className="h-full w-full flex items-center justify-between px-4 bg-white border border-primary/5 rounded-xl text-[10px] font-bold uppercase tracking-widest text-primary shadow-sm outline-none cursor-pointer">
@@ -34,7 +34,7 @@ export default function PosTerminalTab({ state, handlers }) {
             </Listbox>
           </div>
 
-          <div className="w-44">
+          <div className="w-full sm:w-44">
             <Listbox value={state.activeCategory} onChange={handlers.setActiveCategory}>
               <div className="relative h-full">
                 <ListboxButton className="h-full w-full flex items-center justify-between px-4 bg-white border border-primary/5 rounded-xl text-[10px] font-bold uppercase tracking-widest text-primary shadow-sm outline-none cursor-pointer">
@@ -85,7 +85,7 @@ export default function PosTerminalTab({ state, handlers }) {
       </div>
 
       {/* RIGHT: CART SIDEBAR */}
-      <div className="w-100 flex flex-col bg-white/80 backdrop-blur-xl rounded-4xl border border-primary/10 shadow-lg overflow-hidden shrink-0">
+      <div className="w-full lg:w-100 flex flex-col bg-white/80 backdrop-blur-xl rounded-4xl border border-primary/10 shadow-lg shrink-0 min-h-[500px]">
         <div className="p-5 border-b border-primary/5 bg-secondary/10 shrink-0">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-sm font-bold uppercase tracking-widest text-primary flex items-center gap-2"><ShoppingBag size={16} /> Current Order</h3>

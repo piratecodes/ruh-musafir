@@ -631,10 +631,10 @@ export default function BookingModal({ isOpen, mode = 'EDIT', onClose, selectedS
                     <button onClick={onClose} className="text-foreground/40 hover:text-primary transition-colors p-1.5 bg-secondary/20 hover:bg-secondary rounded-full shrink-0"><X size={16} /></button>
                   </div>
 
-                  <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
+                  <div className="flex flex-col lg:flex-row flex-1 overflow-y-auto lg:overflow-hidden">
                     
                     {/* LEFT COLUMN: SCROLLABLE FORMS */}
-                    <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-accent/25 scrollbar-corner-foreground/75 scrollbar-track-accent/25 p-6 sm:p-8 bg-gray-50/50">
+                    <div className="flex-1 lg:overflow-y-auto overflow-visible scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-accent/25 scrollbar-corner-foreground/75 scrollbar-track-accent/25 p-6 sm:p-8 bg-gray-50/50">
                       <form id="booking-form" onSubmit={handleSubmit} className="space-y-8 max-w-3xl mx-auto lg:mx-0">
                         
                         <div className={`bg-white p-6 rounded-2xl border shadow-sm space-y-5 ${isClosed ? 'opacity-70 pointer-events-none border-gray-200' : 'border-primary/5'}`}>

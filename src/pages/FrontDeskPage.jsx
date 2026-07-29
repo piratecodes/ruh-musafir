@@ -88,7 +88,7 @@ export default function FrontDeskPage() {
   });
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-350 mx-auto pb-12 h-[calc(100vh-4rem)] flex flex-col">
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-350 mx-auto pb-12 min-h-[calc(100vh-4rem)] flex flex-col">
       
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 bg-white/40 p-6 rounded-4xl border border-primary/5 shadow-sm shrink-0">
         <div>
@@ -221,7 +221,7 @@ export default function FrontDeskPage() {
         </div>
       </div>
 
-      <div className="flex-1 min-h-0 relative z-10 flex flex-col mx-6">
+      <div className="flex-1 min-h-[500px] md:min-h-0 relative z-10 flex flex-col mx-6">
         <BookingsTable 
           bookings={filteredBookings} 
           isLoading={isLoading} 

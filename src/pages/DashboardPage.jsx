@@ -227,7 +227,7 @@ export default function DashboardPage() {
             </div>
           </div>
           
-          <div className="flex items-center gap-4 w-full md:w-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full md:w-auto">
             <input 
               type="text" 
               value={maintenance.maintenanceMessage}
@@ -238,7 +238,7 @@ export default function DashboardPage() {
             <button 
               onClick={() => saveMaintenanceState({ ...maintenance, isMaintenanceMode: !maintenance.isMaintenanceMode })}
               disabled={isSavingMaintenance}
-              className={`px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center gap-2 transition-all shadow-md ${maintenance.isMaintenanceMode ? 'bg-foreground text-white hover:bg-black' : 'bg-red-500 text-white hover:bg-red-600'}`}
+              className={`px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-md shrink-0 ${maintenance.isMaintenanceMode ? 'bg-foreground text-white hover:bg-black' : 'bg-red-500 text-white hover:bg-red-600'}`}
             >
               {isSavingMaintenance ? <Loader2 size={16} className="animate-spin" /> : <Power size={16} />}
               {maintenance.isMaintenanceMode ? 'Deactivate' : 'Trigger Lockdown'}

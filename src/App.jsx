@@ -19,6 +19,7 @@ import CafePosPage from '@/pages/CafePosPage'
 import ContactPage from '@/pages/ContactPage'
 import TreasuryPage from '@/pages/TreasuryPage'
 import SettingsPage from '@/pages/SettingsPage' 
+import OurStoriesPage from '@/pages/OurStoriesPage'
 
 // Error Boundary
 import ErrorPage from '@/components/common/ErrorBoundary'
@@ -58,6 +59,14 @@ const router = createBrowserRouter([
           {
             path: '/bookings',         // <-- NEW ROUTE
             element: <BookingsPage />
+          },
+          {
+            path: '/settings',
+            element: <SettingsPage />
+          },
+          {
+            path: '/our-stories',
+            element: <OurStoriesPage />
           },
           {
             path: '/experiences',
