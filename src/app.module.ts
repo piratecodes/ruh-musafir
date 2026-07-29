@@ -19,6 +19,7 @@ import { ExperiencesModule } from './experiences/experiences.module';
 import { InquiriesModule } from './inquiries/inquiries.module';
 import { SettingsModule } from './settings/settings.module';
 import { MailModule } from './mail/mail.module';
+import { OurStoriesModule } from './our-stories/our-stories.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { MailModule } from './mail/mail.module';
     InquiriesModule,
     SettingsModule,
     MailModule,
+    OurStoriesModule,
   ],
   controllers: [AppController], 
   providers: [AppService],

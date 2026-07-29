@@ -82,6 +82,7 @@ model User {
   openedShifts  Shift[]   @relation("ShiftOpenedBy")
   closedShifts  Shift[]   @relation("ShiftClosedBy")
   expenses      Expense[]
+  stories       Story[]
   // ------------------------------------------------------
 
   resetToken        String?
@@ -347,4 +348,33 @@ model SystemSettings {
   isMaintenanceMode  Boolean  @default(false)
   maintenanceMessage String?  @db.Text
   updatedAt          DateTime @updatedAt
+}
+
+// --- CONTENT MANAGEMENT (BLOGS / OUR STORIES) ---
+model Story {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  excerpt     String?  @db.Text
+  content     String   @db.Text
+  faqs        Json?    
+  coverImage  String?
+  coverImageAlt String?  
+  category    String?  
+  
+  customAuthor String?
+  authorId    String?
+  author      User?    @relation(fields: [authorId], references: [id])
+  
+  isPublished Boolean  @default(false)
+
+  seoMetaTitle       String?
+  seoMetaDescription String?  @db.Text
+  seoMetaKeywords    String?
+  seoCanonicalUrl    String?
+  seoIsNoIndex       Boolean @default(false)
+  seoJsonLdSchema    String?  @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
