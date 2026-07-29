@@ -12,6 +12,8 @@
   --color-glass-border: rgba(255, 255, 255, 0.3);
 }
 
+@plugin "@tailwindcss/typography";
+
 @plugin 'tailwind-scrollbar'{
     nocompatible: true;
     preferredStrategy: 'pseudoelements';
@@ -59,4 +61,82 @@ body{
 
 .animate-slow-zoom {
   animation: slow-zoom 30s ease-in-out infinite alternate;
+}
+
+
+/* Jodit Blog Content Unreset (Fixed for Tailwind Typography) */
+.blog-content h1 { @apply text-4xl! font-extrabold! text-primary! mb-6! mt-8!; scroll-margin-top: 6rem !important; }
+.blog-content h2 { @apply text-3xl! font-bold! text-primary! mb-5! mt-8!; scroll-margin-top: 6rem !important; }
+.blog-content h3 { @apply text-2xl! font-bold! text-primary! mb-4! mt-6!; scroll-margin-top: 6rem !important; }
+.blog-content h4 { @apply text-xl! font-bold! text-primary! mb-3! mt-4!; scroll-margin-top: 6rem !important; }
+.blog-content h5 { @apply text-lg! font-bold! text-primary! mb-2! mt-4!; scroll-margin-top: 6rem !important; }
+.blog-content h6 { @apply text-base! font-bold! text-primary! mb-2! mt-4!; scroll-margin-top: 6rem !important; }
+
+/* If Jodit injects weird inline font sizes, we don't want it ruining headings. The !important above protects headings. */
+.blog-content p, .blog-content span {
+  font-size: inherit;
+}
+
+.blog-content table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 1.5rem 0 !important;
+}
+
+.blog-content table td,
+.blog-content table th {
+  border: 1px solid #e2e8f0 !important;
+  padding: 0.75rem !important;
+}
+
+.blog-content table th {
+  background-color: #f8fafc !important;
+  font-weight: 700 !important;
+}
+
+.blog-content p {
+  margin-bottom: 1.25rem !important;
+  line-height: 1.7 !important;
+}
+
+.blog-content ul {
+  list-style-type: disc !important;
+  padding-left: 2rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.blog-content ol {
+  list-style-type: decimal !important;
+  padding-left: 2rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.blog-content li {
+  margin-bottom: 0.25rem !important;
+  display: list-item !important;
+}
+
+/* Tighter gaps for nested sub-points */
+.blog-content ul ul,
+.blog-content ol ol,
+.blog-content ul ol,
+.blog-content ol ul {
+  margin-bottom: 0 !important;
+  margin-top: 0.25rem !important;
+}
+
+.blog-content a {
+  color: #738eb3 !important;
+  font-weight: 700 !important;
+  text-decoration: underline !important;
+  text-decoration-color: #3e4c66 !important;
+  text-underline-offset: 4px !important;
+  text-decoration-thickness: 2px !important;
+  transition: all 0.2s ease !important;
+}
+
+.blog-content a:hover {
+  color: #7387ac !important;
+  text-decoration-color: #44505c !important;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
 }

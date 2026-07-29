@@ -49,8 +49,9 @@ const nextConfig = {
     useFileSystemPublicRoutes: true,
     poweredByHeader: false,
     images: {
+        dangerouslyAllowLocalIP: true,
         // domains: ['flowbite.com', 'images.unsplash.com', 'media.istockphoto.com', 'images.pexels.com', 'dummyimage.com', 'images.unsplash.com', "localhost"],
-        remotePatterns: [ { protocol: 'https', hostname: 'res.cloudinary.com' }, { protocol: 'https', hostname: 'dummyimage.com' }, { protocol: 'https', hostname: 'images.unsplash.com' }, { protocol: 'https', hostname: "localhost" }, ]
+        remotePatterns: [ { protocol: 'https', hostname: 'res.cloudinary.com' }, { protocol: 'https', hostname: 'dummyimage.com' }, { protocol: 'https', hostname: 'images.unsplash.com' }, { protocol: 'http', hostname: "localhost" }, { protocol: 'http', hostname: "localhost", port: "3001" }, { protocol: 'https', hostname: "api.ruhmusafir.in" }  ]
     },
     devIndicators: {
         position: 'bottom-left',

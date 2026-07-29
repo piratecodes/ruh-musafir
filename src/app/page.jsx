@@ -1,8 +1,8 @@
 import Image from "next/image";
-import Header from "@/component/landing/header";
-import Rooms from "@/component/landing/RoomsPreview";
-import Experiences from "@/component/landing/Experiences";
-import Cta from "@/component/landing/cta";
+import Header from "@/components/landing/header";
+import Rooms from "@/components/landing/RoomsPreview";
+import Experiences from "@/components/landing/Experiences";
+import Cta from "@/components/landing/cta";
 
 export default function Home() {
   return (
@@ -12,6 +12,6 @@ export default function Home() {
       <Experiences />
       <Cta />
     </main>
-      
+
   );
 }

@@ -7,10 +7,10 @@ import "@/styles/globals.css";
 
 import { StoreProvider } from '@/store/StoreProvider';
 //Header & footer Files to add in layout.jsx
-import Nav from "@/component/nav";
-import Floating from "@/component/FloatingContact";
-import MaintenanceNotifier from "@/component/MaintenanceNotifier";
-import Footer from "@/component/footer";
+import Nav from "@/components/nav";
+import Floating from "@/components/FloatingContact";
+import MaintenanceNotifier from "@/components/MaintenanceNotifier";
+import Footer from "@/components/footer";
 
 
 const montserrat = Montserrat({
@@ -37,23 +37,23 @@ export const metadata = {
     siteName: "Ruh Musafir.",
     description: "Trusted packers and movers company in Kolkata offering shifting, storage solutions, and car transport services with safe, reliable handling.",
     images: [
-      {url: "https://www.ruhmusafir.com/icon.png", alt: "ruhmusafir | Logo", type: 'image/png', sizes:"192x192", fetchPriority: "auto"},
+      { url: "https://www.ruhmusafir.com/icon.png", alt: "ruhmusafir | Logo", type: 'image/png', sizes: "192x192", fetchPriority: "auto" },
     ],
   },
-  twitter:{
+  twitter: {
     card: "Ruh Musafir.",
     title: "Home - Ruh Musafir.",
     creator: "Ruh Musafir.",
     description: "Trusted packers and movers company in Kolkata offering shifting, storage solutions, and car transport services with safe, reliable handling.",
     images: [
-      {url: "https://www.ruhmusafir.com/icon.png", alt: "ruhmusafir | Logo", type: 'image/png', sizes:"192x192", fetchPriority: "auto"},
+      { url: "https://www.ruhmusafir.com/icon.png", alt: "ruhmusafir | Logo", type: 'image/png', sizes: "192x192", fetchPriority: "auto" },
     ],
   },
-  icons:{
-    icon:[
-      {url: '/icon.png', type: "image/png", sizes:"192x192", rel:"icon", fetchPriority: "auto"},
+  icons: {
+    icon: [
+      { url: '/icon.png', type: "image/png", sizes: "192x192", rel: "icon", fetchPriority: "auto" },
     ],
-    shortcut: {url: '/icon.png', type: "image/png", fetchPriority: "auto"},
+    shortcut: { url: '/icon.png', type: "image/png", fetchPriority: "auto" },
   }
 };
 
@@ -125,7 +125,7 @@ export default function RootLayout({ children }) {
         {/* Google Analitics */}
         {/* <Script strategy='afterInteractive' type="text/partytown" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_MeasurementId_ga}`} /> */}
         <StoreProvider>
-          <NextTopLoader   color="#c5a059"   initialPosition={0.08}   crawlSpeed={200}   height={3}   crawl={true}   showSpinner={false}   easing="ease"   speed={200}   shadow="0 0 10px #f1a4c7,0 0 5px #f1a4c7" />
+          <NextTopLoader color="#c5a059" initialPosition={0.08} crawlSpeed={200} height={3} crawl={true} showSpinner={false} easing="ease" speed={200} shadow="0 0 10px #f1a4c7,0 0 5px #f1a4c7" />
           <MaintenanceNotifier />
           <Nav />
           {/* Add JSON-LD to your page */}
