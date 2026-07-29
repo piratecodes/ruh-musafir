@@ -14,7 +14,7 @@ async function bootstrap() {
 
   // 2. MUST BE SECOND: CORS (Allows Vite to connect and send cookies)
   app.enableCors({
-    origin: ['http://localhost:5173', 'http://localhost:3000'], // Frontend URLs
+    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://ruhmusafir.in', 'https://admin.ruhmusafir.in'], // Frontend URLs
     credentials: true, 
   });
 
