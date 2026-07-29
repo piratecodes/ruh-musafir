@@ -61,3 +61,69 @@ body{
 .animate-slow-zoom {
   animation: slow-zoom 30s ease-in-out infinite alternate;
 }
+
+
+
+/* Jodit Editor Styling to exactly match Frontend */
+.jodit-wysiwyg *, .jodit-dialog__content *, .jodit-dialog__panel * {
+  font-size: inherit;
+  font-family: inherit;
+}
+.jodit-wysiwyg [style*="font-size"], .jodit-dialog__content [style*="font-size"] {
+  font-size: var(--jodit-font-size, inherit) !important;
+}
+.jodit-wysiwyg h1, .jodit-dialog__content h1, .jodit-dialog__panel h1 { @apply text-4xl font-bold my-4 text-primary; }
+.jodit-wysiwyg h2, .jodit-dialog__content h2, .jodit-dialog__panel h2 { @apply text-3xl font-bold my-3 text-primary; }
+.jodit-wysiwyg h3, .jodit-dialog__content h3, .jodit-dialog__panel h3 { @apply text-2xl font-bold my-2 text-primary; }
+.jodit-wysiwyg h4, .jodit-dialog__content h4, .jodit-dialog__panel h4 { @apply text-xl font-bold my-2 text-primary; }
+.jodit-wysiwyg h5, .jodit-dialog__content h5, .jodit-dialog__panel h5 { @apply text-lg font-bold my-1 text-primary; }
+.jodit-wysiwyg h6, .jodit-dialog__content h6, .jodit-dialog__panel h6 { @apply text-base font-bold my-1 text-primary; }
+
+.jodit-wysiwyg p, .jodit-dialog__content p, .jodit-dialog__panel p {
+  margin-bottom: 1.25rem !important;
+  line-height: 1.7 !important;
+}
+
+.jodit-wysiwyg ul, .jodit-dialog__content ul, .jodit-dialog__panel ul {
+  list-style-type: disc !important;
+  padding-left: 2rem !important;
+  margin-bottom: 1.25rem !important;
+}
+.jodit-wysiwyg ol, .jodit-dialog__content ol, .jodit-dialog__panel ol {
+  list-style-type: decimal !important;
+  padding-left: 2rem !important;
+  margin-bottom: 1.25rem !important;
+}
+.jodit-wysiwyg li, .jodit-dialog__content li, .jodit-dialog__panel li {
+  margin-bottom: 0.5rem !important;
+  display: list-item !important;
+}
+
+.jodit-wysiwyg table, .jodit-dialog__content table, .jodit-dialog__panel table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 1.5rem 0 !important;
+}
+.jodit-wysiwyg table td, .jodit-wysiwyg table th, .jodit-dialog__content table td, .jodit-dialog__content table th, .jodit-dialog__panel table td, .jodit-dialog__panel table th {
+  border: 1px solid #e2e8f0 !important;
+  padding: 0.75rem !important;
+}
+.jodit-wysiwyg table th, .jodit-dialog__content table th, .jodit-dialog__panel table th {
+  background-color: #f8fafc !important;
+  font-weight: 700 !important;
+}
+
+.jodit-wysiwyg a, .jodit-dialog__content a, .jodit-dialog__panel a {
+    color: #738eb3 !important;
+    font-weight: 700 !important;
+    text-decoration: underline !important;
+    text-decoration-color: #3e4c66 !important;
+    text-underline-offset: 4px !important;
+    text-decoration-thickness: 2px !important;
+    transition: all 0.2s ease !important;
+}
+.jodit-wysiwyg a:hover, .jodit-dialog__content a:hover, .jodit-dialog__panel a:hover {
+    color: #7387ac !important;
+    text-decoration-color: #44505c !important;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
+}

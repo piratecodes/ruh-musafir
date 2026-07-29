@@ -41,6 +41,7 @@ export default function StoryFormDrawer({ isOpen, onClose, blog, onSuccess }) {
   const [activeTab, setActiveTab] = useState('basic'); // 'basic', 'content', 'seo'
   const [existingCategories, setExistingCategories] = useState([]);
   const [query, setQuery] = useState('');
+  const [imageFile, setImageFile] = useState(null);
 
   const filteredCategories = query === '' 
     ? existingCategories 
@@ -170,6 +171,7 @@ export default function StoryFormDrawer({ isOpen, onClose, blog, onSuccess }) {
       });
       setTouchedFields({ seoMetaTitle: false, seoMetaDescription: false, seoJsonLdSchema: false });
       setEditorContent('');
+      setImageFile(null);
       setActiveTab('basic');
     }
   }, [blog, isOpen]);
@@ -241,57 +243,50 @@ export default function StoryFormDrawer({ isOpen, onClose, blog, onSuccess }) {
     });
   }, [formData.title, formData.content, formData.coverImage, formData.slug, formData.customAuthor, formData.seoCanonicalUrl, formData.seoMetaTitle, formData.seoMetaDescription, touchedFields, blog]);
 
-  // Cloudinary Widget
-  const openCloudinaryWidget = () => {
-    if (!window.cloudinary) return toast.error("Cloudinary script missing.");
-    window.cloudinary.openUploadWidget({
-      cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
-      apiKey: import.meta.env.VITE_CLOUDINARY_API_KEY,
-      folder: import.meta.env.MODE === 'development' ? 'dev/our-stories' : 'blogs',
-      cropping: true,
-      multiple: false,
-      uploadSignature: async (callback, params_to_sign) => {
-        try {
-          const res = await fetchClient('/location-pages/cloudinary-signature', { method: 'POST', body: JSON.stringify(params_to_sign) });
-          callback(res.data.signature);
-        } catch (err) { toast.error("Signature failed. Check backend."); }
+  // Local File Upload Handler
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        return toast.error("File is too large (max 5MB)");
       }
-    }, async (error, result) => {
-      if (!error && result && result.event === "success") {
-        // If they already had an image, delete the old one from Cloudinary to save space
-        if (formData.coverImage) {
-          try {
-            await fetchClient('/location-pages/delete-image', { method: 'POST', body: JSON.stringify({ imageUrl: formData.coverImage }) });
-          } catch(e) { console.error("Failed to delete old image", e); }
-        }
-        setFormData(prev => ({ ...prev, coverImage: result.info.secure_url }));
-      }
-    });
+      setImageFile(file);
+      setFormData(prev => ({ ...prev, coverImage: URL.createObjectURL(file) }));
+    }
   };
 
-  const handleDeleteImage = async () => {
-    if (!formData.coverImage) return;
-    try {
-      await fetchClient('/location-pages/delete-image', { method: 'POST', body: JSON.stringify({ imageUrl: formData.coverImage }) });
-      setFormData(prev => ({ ...prev, coverImage: '' }));
-      toast.success("Image deleted from Cloudinary");
-    } catch (err) {
-      toast.error("Failed to delete image");
-    }
+  const handleDeleteImage = () => {
+    setImageFile(null);
+    setFormData(prev => ({ ...prev, coverImage: '' }));
   };
 
   const handleSave = async () => {
     if (!formData.title || !formData.slug) return toast.error("Title and Slug are required");
     
-    const payload = { ...formData };
-
     setIsLoading(true);
     try {
+      const data = new FormData();
+      Object.keys(formData).forEach(key => {
+        if (key === 'faqs') {
+          data.append('faqs', JSON.stringify(formData.faqs));
+        } else if (key === 'coverImage' && imageFile) {
+          // handled below
+        } else {
+          data.append(key, formData[key] === null ? '' : formData[key]);
+        }
+      });
+      
+      if (imageFile) {
+        data.append('coverImage', imageFile);
+      } else if (!formData.coverImage) {
+        data.append('coverImage', 'null'); // Indicate deletion to backend if no local file but existing removed
+      }
+
       if (blog?.id) {
-        await fetchClient(`/our-stories/${blog.id}`, { method: 'PATCH', body: JSON.stringify(payload) });
+        await fetchClient(`/our-stories/${blog.id}`, { method: 'PATCH', body: data });
         toast.success("Blog updated!");
       } else {
-        await fetchClient('/our-stories', { method: 'POST', body: JSON.stringify(payload) });
+        await fetchClient('/our-stories', { method: 'POST', body: data });
         toast.success("Blog created!");
       }
       onSuccess();
@@ -360,7 +355,7 @@ export default function StoryFormDrawer({ isOpen, onClose, blog, onSuccess }) {
                     <div className="space-y-6 max-w-6xl">
                       <div>
                         <label className="block text-sm font-semibold text-gray-900 mb-1">Title <span className="text-red-500">*</span></label>
-                        <input type="text" value={formData.title} onChange={e => { setFormData({...formData, title: e.target.value}); autoGenerateSlug(e.target.value); }} className="w-full p-2 bg-white/70 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="10 Tips for Moving..." />
+                        <input type="text" value={formData.title} onChange={e => { setFormData({...formData, title: e.target.value}); autoGenerateSlug(e.target.value); }} className="w-full p-2 bg-white/70 border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="Fell the luxury near Mountains..." />
                       </div>
                       
                       <div>
@@ -440,7 +435,7 @@ export default function StoryFormDrawer({ isOpen, onClose, blog, onSuccess }) {
                         {formData.coverImage ? (
                           <div className='flex flex-row space-x-5 items-start'>
                             <div className="relative rounded-xl overflow-hidden border border-gray-200 w-full max-w-sm mb-3">
-                              <img src={formData.coverImage} alt="Cover Preview" className="w-full h-48 object-cover" />
+                              <img src={formData.coverImage.startsWith('blob:') || formData.coverImage.startsWith('http') ? formData.coverImage : `${(import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api/v1').replace('/api/v1', '')}${formData.coverImage}`} alt="Cover Preview" className="w-full h-48 object-cover" />
                               <button onClick={handleDeleteImage} className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-lg hover:bg-red-600 shadow-md transition-colors">
                                 <Trash2 className="w-4 h-4" />
                               </button>
@@ -457,10 +452,16 @@ export default function StoryFormDrawer({ isOpen, onClose, blog, onSuccess }) {
                             </div>
                           </div>
                         ) : (
-                          <button onClick={openCloudinaryWidget} className="flex flex-col items-center justify-center w-full max-w-sm h-32 border-2 border-dashed border-gray-300 rounded-xl hover:bg-gray-100 hover:border-primary transition-colors text-gray-500 group">
+                          <div className="relative flex flex-col items-center justify-center w-full max-w-sm h-32 border-2 border-dashed border-gray-300 rounded-xl hover:bg-gray-100 hover:border-primary transition-colors text-gray-500 group">
                             <UploadCloud className="w-8 h-8 mb-2 group-hover:text-primary transition-colors" />
                             <span className="text-sm font-medium">Upload Cover Image</span>
-                          </button>
+                            <input 
+                              type="file" 
+                              accept="image/*" 
+                              onChange={handleFileChange}
+                              className="absolute inset-0 opacity-0 cursor-pointer"
+                            />
+                          </div>
                         )}
                       </div>
 
