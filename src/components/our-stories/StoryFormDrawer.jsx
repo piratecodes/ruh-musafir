@@ -487,7 +487,10 @@ export default function StoryFormDrawer({ isOpen, onClose, blog, onSuccess }) {
                           ref={editorRef}
                           value={editorContent}
                           config={joditConfig}
-                          onBlur={newContent => setFormData({...formData, content: newContent})}
+                          onBlur={newContent => {
+                            setFormData({...formData, content: newContent});
+                            setEditorContent(newContent);
+                          }}
                           onChange={() => {}} // Empty onChange to satisfy prop requirements without triggering cursor jump
                         />
                       </div>
