@@ -10,6 +10,6 @@ export default function robots() {
         allow: ['/'],
         }
     ],
-    sitemap: 'https://pradhanservice.com/sitemap.xml',
+    sitemap: 'https://ruhmusafir.in/sitemap.xml',
   }
 }
