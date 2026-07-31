@@ -53,6 +53,8 @@ export default function Footer() {
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="hover:text-white transition-colors">Instagram</a>
             <a href="#" className="hover:text-white transition-colors">Facebook</a>
+            <a className="hover:text-white transition-colors" target="_blank" href="/sitemap.xml">Sitemap</a>
+            <a className="hover:text-white transition-colors" target="_blank" href="/robots.txt">Robots</a>
           </div>
         </div>
 
