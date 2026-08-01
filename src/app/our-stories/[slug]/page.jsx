@@ -107,9 +107,9 @@ export default async function SingleStoryPage({ params }) {
           </h1>
           <div className="pr-2.5 flex items-center justify-end gap-4 text-foreground/70 font-medium z-10">
 
-            <span className="text-primary">{blog.customAuthor || blog.author?.name || 'Admin'}</span>
+            <span className="text-primary">{blog.customAuthor || (blog.author ? `${blog.author.firstName} ${blog.author.lastName}` : 'Admin')}</span>
             <span>•</span>
-            <span>{new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+            <span>{new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'Asia/Kolkata' })}</span>
           </div>
         </div>
 

@@ -69,7 +69,7 @@ export default function StoryClientGrid({ initialBlogs, categories }) {
         <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-[#372fa0] transition-colors line-clamp-2">{blog.title}</h3>
         <p className="text-foreground/70 text-sm mb-4 line-clamp-3 flex-1">{blog.excerpt}</p>
         <div className="flex items-center justify-between text-xs text-foreground/70 font-medium pt-4 border-t border-gray-100 mt-auto">
-          <span className="text-primary">{blog.customAuthor || blog.author?.name || 'Admin'}</span>
+          <span className="text-primary">{blog.customAuthor || (blog.author ? `${blog.author.firstName} ${blog.author.lastName}` : 'Admin')}</span>
           <span>{new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
         </div>
       </div>
@@ -112,7 +112,7 @@ export default function StoryClientGrid({ initialBlogs, categories }) {
                         <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight group-hover:text-[#d4b472] transition-colors drop-shadow-md">{initialBlogs[0].title}</h3>
                         <p className="text-gray-200 text-base md:text-lg mb-4 line-clamp-2 drop-shadow-sm">{initialBlogs[0].excerpt}</p>
                         <div className="flex items-center text-gray-300 text-sm font-medium">
-                          <span>{initialBlogs[0].customAuthor || initialBlogs[0].author?.name || 'Admin'}</span>
+                          <span>{initialBlogs[0].customAuthor || (initialBlogs[0].author ? `${initialBlogs[0].author.firstName} ${initialBlogs[0].author.lastName}` : 'Admin')}</span>
                           <span className="mx-2">•</span>
                           <span>{new Date(initialBlogs[0].createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
                         </div>
