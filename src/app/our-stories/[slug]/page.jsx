@@ -13,7 +13,7 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const { slug } = resolvedParams;
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/our-stories/${slug}`, { cache: 'no-store' });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/our-stories/${slug}`);
     const data = await res.json();
     if (!data.success || !data.data?.blog) return {};
 
@@ -56,13 +56,13 @@ export default async function SingleStoryPage({ params }) {
 
   try {
     // Fetch Single Blog
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/our-stories/${slug}`, { cache: 'no-store' });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/our-stories/${slug}`);
     const data = await res.json();
     if (data.success && data.data?.blog) {
       blog = data.data.blog;
 
       // Fetch All Blogs (to filter for similar blogs and categories)
-      const resAll = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/our-stories`, { cache: 'no-store' });
+      const resAll = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/our-stories`);
       const dataAll = await resAll.json();
       if (dataAll.success && dataAll.data?.blogs) {
         const publishedBlogs = dataAll.data.blogs.filter(b => b.isPublished);

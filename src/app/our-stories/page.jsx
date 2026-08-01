@@ -12,7 +12,7 @@ export default async function OurStoriesPage() {
 
   try {
     console.log("Fetching fresh blogs...");
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/our-stories`, { cache: 'no-store' });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/our-stories`);
     const data = await res.json();
     if (data.success && data.data?.blogs) {
       blogs = data.data.blogs.filter(b => b.isPublished);
