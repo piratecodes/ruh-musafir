@@ -3,7 +3,7 @@ name: Build and Push Admin
 on:
   push:
     branches:
-      - admin
+      - Admin
 
 permissions:
   contents: read
