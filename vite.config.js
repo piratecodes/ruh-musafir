@@ -19,5 +19,9 @@ export default defineConfig({
   },
   server: {
     allowedHosts: true,
+    host: '0.0.0.0', // Exposes Vite outside the container
+    watch: {
+      usePolling: true, // Forces Vite to constantly check for file saves
+    }
   },
 })
