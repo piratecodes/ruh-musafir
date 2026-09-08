@@ -29,3 +29,5 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/piratecodes/ruhmusafir-admin:latest
+          build-args: |
+            VITE_API_BASE_URL=https://api.ruhmusafir.in/api/v1

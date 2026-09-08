@@ -1,6 +1,11 @@
 # Stage 1: Build Vite assets
 FROM node:24-alpine AS builder
 WORKDIR /app
+
+# Inject API URL at build time
+ARG VITE_API_BASE_URL
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+
 COPY package.json yarn.lock* package-lock.json* ./
 RUN yarn install --network-timeout 600000
 COPY . .
