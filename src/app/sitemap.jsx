@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 export default async function sitemap() {
   const baseUrl = 'https://ruhmusafir.in';
 
@@ -22,7 +23,7 @@ export default async function sitemap() {
   // 2. Dynamic Blog Routes
   let blogRoutes = [];
   try {
-    const blogsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/our-stories`, { 
+    const blogsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://api.ruhmusafir.com'}/our-stories`, { 
       // Cache the fetch to prevent hitting the backend too frequently during sitemap generation
       next: { revalidate: 3600 } 
     });
