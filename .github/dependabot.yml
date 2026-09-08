@@ -1,0 +1,15 @@
+version: 2
+updates:
+  # Check Yarn / npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+
+  # Check Dockerfile base images (e.g., node:alpine security patches)
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 3
