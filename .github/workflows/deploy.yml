@@ -29,3 +29,5 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/piratecodes/ruhmusafir-frontend:latest
+          build-args: |
+            NEXT_PUBLIC_API_URL=https://api.ruhmusafir.in/api/v1

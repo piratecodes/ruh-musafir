@@ -1,6 +1,11 @@
 # Stage 1: Build Next.js
 FROM node:24-alpine AS builder
 WORKDIR /app
+
+# Inject API URL at build time
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
 COPY package.json yarn.lock* package-lock.json* ./
 RUN yarn install --network-timeout 600000
 COPY . .
